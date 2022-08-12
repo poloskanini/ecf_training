@@ -4,6 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\Partner;
+use App\Entity\Structure;
+use Symfony\Bundle\MakerBundle\Str;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
@@ -12,39 +14,21 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {   
 
-        $orangeUser = new User();
-        $orangeUser
-            ->setEmail('orange@user.fr')
-            ->setPassword('orangebleue')
-            ->setName('Orange Bleue')
-            ->setRoles(['ROLE_PARTNER'])
+        //NEW USERS
+
+        $orangeUser3 = new User();
+        $orangeUser3
+            ->setEmail('ruetartuffe@orangebleueparis.fr')
+            ->setPassword('tartuffe')
+            ->setName('Manager Roger Paris')
+            ->setRoles(['ROLE_STRUCTURE'])
             ;
 
-        $orangePartner = new Partner();
-        $orangePartner
-            ->setName('L\'orange bleue Dunkerque')
-            ->setUserId($orangeUser)
-            ->setPermissions([
-                ['planning' => '1'],
-                ['newsletter' => '1'],
-                ['boissons' => '1'],
-                ['sms' => '1'],
-                ['concours' => '1'],
-                ])
-            ;
-
-            $orangeUser2 = new User();
-        $orangeUser2
-            ->setEmail('orangejaune@user.fr')
-            ->setPassword('orangejaune')
-            ->setName('Orange Jaune')
-            ->setRoles(['ROLE_USER'])
-            ;
-
-        $orangePartner2 = new Partner();
-        $orangePartner2
-            ->setName('L\'orange Jaune Lille')
-            ->setUserId($orangeUser2)
+        // NEW PARTNER
+        $orangePartner3 = new Partner();
+        $orangePartner3
+            ->setName('L\'orange Violette Paris')
+            ->setUserId($orangeUser3)
             ->setPermissions([
                 ['planning' => '0'],
                 ['newsletter' => '0'],
@@ -52,13 +36,21 @@ class AppFixtures extends Fixture
                 ['sms' => '1'],
                 ['concours' => '0'],
             ]);
+        
+        // NEW STRUCTURE
+        $orangeStructure3 = new Structure();
+        $orangeStructure3
+            ->setPostalAdress('3 rue tartuffe, Paris')
+            ->setUserId($orangeUser3)
+            ->setPartnerId($orangePartner3)
+            ;
 
-        // $product = new Product();
-        // $manager->persist($product);
-        $manager->persist($orangeUser);
-        $manager->persist($orangePartner);
-        $manager->persist($orangeUser2);
-        $manager->persist($orangePartner2);
+        
+        // COMMIT AND PUSH (Persist and Flush)
+        
+        $manager->persist($orangeUser3);
+        $manager->persist($orangePartner3);
+        $manager->persist($orangeStructure3);
         $manager->flush();
     }
 }

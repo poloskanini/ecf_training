@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -13,10 +14,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $email = null;
+    private string $email;
 
     #[ORM\Column]
     private array $roles = [];
@@ -25,20 +26,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    private ?string $password = null;
+    private string $password;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private string $name;
 
     #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
-    private ?Partner $partner = null;
+    private Partner $partner;
 
-    public function getId(): ?int
+    #[ORM\OneToOne(mappedBy: 'user_id', cascade: ['persist', 'remove'])]
+    private Structure $structure;
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -103,7 +107,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -115,7 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPartner(): ?Partner
+    public function getPartner(): Partner
     {
         return $this->partner;
     }
@@ -128,6 +132,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->partner = $partner;
+
+        return $this;
+    }
+
+    public function getStructure(): Structure
+    {
+        return $this->structure;
+    }
+
+    public function setStructure(Structure $structure): self
+    {
+        // set the owning side of the relation if necessary
+        if ($structure->getUserId() !== $this) {
+            $structure->setUserId($this);
+        }
+
+        $this->structure = $structure;
 
         return $this;
     }

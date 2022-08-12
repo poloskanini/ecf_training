@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\PartnerRepository;
+use App\Repository\StructureRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,12 +20,12 @@ class UserController extends AbstractController
     }
 
     #[Route('/', name: 'app_user_index' ,methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, PartnerRepository $partnerRepository, StructureRepository $structureRepository): Response
     {
-        dump($userRepository->findAll());
-
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+            'partners' => $partnerRepository->findAll(),
+            'structures' => $structureRepository->findAll(),
         ]);
     }
 }

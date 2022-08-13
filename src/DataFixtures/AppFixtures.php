@@ -14,21 +14,20 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {   
 
-        //NEW USERS
-
-        $orangeUser3 = new User();
-        $orangeUser3
-            ->setEmail('ruetartuffe@orangebleueparis.fr')
-            ->setPassword('tartuffe')
-            ->setName('Manager Roger Paris')
-            ->setRoles(['ROLE_STRUCTURE'])
+        //NEW USER
+        $orangeUser1 = new User();
+        $orangeUser1
+            ->setEmail('orangebleueparis@direction.fr')
+            ->setPassword('paris')
+            ->setName('Directeur Orange Bleue Paris')
+            ->setRoles(['ROLE_PARTENAIRE'])
             ;
 
         // NEW PARTNER
-        $orangePartner3 = new Partner();
-        $orangePartner3
-            ->setName('L\'orange Violette Paris')
-            ->setUserId($orangeUser3)
+        $orangePartner1 = new Partner();
+        $orangePartner1
+            ->setName('L\'orange Bleue Champs Elysées')
+            ->setUserId($orangeUser1)
             ->setPermissions([
                 ['planning' => '0'],
                 ['newsletter' => '0'],
@@ -38,19 +37,17 @@ class AppFixtures extends Fixture
             ]);
         
         // NEW STRUCTURE
-        $orangeStructure3 = new Structure();
-        $orangeStructure3
+        $orangeStructure1 = new Structure();
+        $orangeStructure1
             ->setPostalAdress('3 rue tartuffe, Paris')
-            ->setUserId($orangeUser3)
-            ->setPartnerId($orangePartner3)
+            ->setUserId($orangeUser1)
+            ->setPartnerId($orangePartner1)
             ;
-
         
         // COMMIT AND PUSH (Persist and Flush)
-        
-        $manager->persist($orangeUser3);
-        $manager->persist($orangePartner3);
-        $manager->persist($orangeStructure3);
+        $manager->persist($orangeUser1);
+        $manager->persist($orangePartner1);
+        $manager->persist($orangeStructure1);
         $manager->flush();
     }
 }
